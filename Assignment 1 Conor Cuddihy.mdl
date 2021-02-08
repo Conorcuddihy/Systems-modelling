@@ -1,0 +1,295 @@
+{UTF-8}
+Activate Flag=
+	0 + step(1,30)
+	~	
+	~		|
+
+Code Arriving=
+	pulse(10,1)*100000 + pulse(100,1)*100000
+	~	
+	~		|
+
+Code Yield Fraction=
+	IF THEN ELSE((code with errors+error free code)=0,0, error free code/(code with errors\
+		+error free code))
+	~	
+	~		|
+
+new hires=
+	pulse(10,1)*10 + pulse(120,1)*10
+	~	
+	~		|
+
+progression=
+	Activate Flag*Rookies/Progression Delay
+	~	
+	~		|
+
+Discovery Rate=
+	undiscovered reword/Discovery Rate Variable
+	~	
+	~		|
+
+Discovery Rate Variable=
+	14
+	~	
+	~		|
+
+code with errors=
+	experienced code completed*(1-experienced yield) + rookie code completed*(1-rookie yield\
+		)
+	~	
+	~		|
+
+Code to be complete= INTEG (
+	Code Arriving+Discovery Rate-code with errors-error free code
+	
+	,
+		0)
+	~	
+	~		|
+
+rookie yield=
+	0.45
+	~	
+	~		|
+
+error free code=
+	rookie code completed*rookie yield+experienced code completed*experienced yield
+	~	
+	~		|
+
+Max Code completed=
+	min(total capacity, Code to be complete)
+	~	
+	~		|
+
+undiscovered reword= INTEG (
+	code with errors-Discovery Rate,
+		0)
+	~	
+	~		|
+
+experienced yield=
+	0.95
+	~	
+	~		|
+
+code completed= INTEG (
+	error free code,
+		0)
+	~	
+	~		|
+
+rookie code completed=
+	rookie capacity fraction*Max Code completed
+	~	
+	~		|
+
+experienced code completed=
+	Max Code completed*experience capacity fraction
+	~	
+	~		|
+
+experience capacity fraction=
+	experienced capacity/total capacity
+	~	
+	~		|
+
+Progression Delay=
+	50
+	~	
+	~		|
+
+experienced capacity=
+	Experienced*experienced productivity
+	~	
+	~		|
+
+experienced productivity=
+	100
+	~	
+	~		|
+
+rookie capacity=
+	Rookies*rookie productivity
+	~	
+	~		|
+
+rookie capacity fraction=
+	rookie capacity/total capacity
+	~	
+	~		|
+
+rookie productivity=
+	25
+	~	
+	~		|
+
+total capacity=
+	experienced capacity+rookie capacity
+	~	
+	~		|
+
+Experienced= INTEG (
+	progression,
+		8)
+	~	
+	~		|
+
+Rookies= INTEG (
+	new hires-progression,
+		2)
+	~	
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Parameters
+	|
+
+FINAL TIME  = 200
+	~	Day
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 0
+	~	Day
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP 
+	~	Day [0,?]
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 0.125
+	~	Day [0,?]
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$192-192-192,0,Times New Roman|12||0-0-0|0-0-0|0-0-255|-1--1--1|-1--1--1|72,72,5,0
+10,1,Experienced,914,197,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,2,Rookies,648,189,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+12,3,48,490,179,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,4,6,2,4,0,0,22,0,0,0,-1--1--1,,1|(584,179)|
+1,5,6,3,100,0,0,22,0,0,0,-1--1--1,,1|(524,179)|
+11,6,48,554,179,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,7,new hires,554,195,25,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,8,10,1,4,0,0,22,0,0,0,-1--1--1,,1|(830,193)|
+1,9,10,2,100,0,0,22,0,0,0,-1--1--1,,1|(731,193)|
+11,10,376,781,193,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,11,progression,781,209,30,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,12,Progression Delay,758,102,46,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,13,2,10,1,0,0,0,0,64,0,-1--1--1,,1|(728,233)|
+1,14,12,10,0,0,0,0,0,64,0,-1--1--1,,1|(767,141)|
+10,15,rookie capacity,623,300,39,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,16,experienced capacity,845,299,53,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,17,total capacity,705,363,34,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,18,rookie productivity,463,265,48,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,19,experienced productivity,1029,296,32,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,20,rookie capacity fraction,558,426,59,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,21,experience capacity fraction,836,426,43,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,22,2,15,0,0,0,0,0,64,0,-1--1--1,,1|(635,243)|
+1,23,18,15,0,0,0,0,0,64,0,-1--1--1,,1|(535,281)|
+1,24,19,16,0,0,0,0,0,64,0,-1--1--1,,1|(954,296)|
+1,25,1,16,0,0,0,0,0,64,0,-1--1--1,,1|(879,248)|
+1,26,15,17,0,0,0,0,0,64,0,-1--1--1,,1|(657,327)|
+1,27,16,17,0,0,0,0,0,64,0,-1--1--1,,1|(781,328)|
+1,28,16,21,0,0,0,0,0,64,0,-1--1--1,,1|(841,352)|
+1,29,15,20,0,0,0,0,0,64,0,-1--1--1,,1|(593,356)|
+1,30,17,20,0,0,0,0,0,64,0,-1--1--1,,1|(637,391)|
+1,31,17,21,0,0,0,0,0,64,0,-1--1--1,,1|(757,388)|
+10,32,Code to be complete,569,577,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,33,code completed,871,579,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,34,undiscovered reword,553,710,40,20,3,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,35,37,33,4,0,0,22,0,0,0,-1--1--1,,1|(778,578)|
+1,36,37,32,100,0,0,22,0,0,0,-1--1--1,,1|(661,578)|
+11,37,486,720,578,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,38,error free code,720,594,38,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,39,41,34,4,0,0,22,0,0,0,-1--1--1,,1|(561,669)|
+1,40,41,32,100,0,0,22,0,0,0,-1--1--1,,1|(561,617)|
+11,41,354,561,643,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,42,code with errors,610,643,41,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,43,45,32,4,0,0,22,0,0,0,-1--1--1,,3|(443,583)|(443,583)|(486,583)|
+1,44,45,34,100,0,0,22,0,0,0,-1--1--1,,1|(443,710)|
+11,45,332,443,646,8,6,33,3,0,0,4,0,0,0,0,0,0,0,0,0
+10,46,Discovery Rate,490,646,39,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+12,47,48,410,558,10,8,0,3,0,0,-1,0,0,0,0,0,0,0,0,0
+1,48,50,32,4,0,0,22,0,0,0,-1--1--1,,1|(504,561)|
+1,49,50,47,100,0,0,22,0,0,0,-1--1--1,,1|(444,561)|
+11,50,48,474,561,6,8,34,3,0,0,1,0,0,0,0,0,0,0,0,0
+10,51,Code Arriving,474,577,37,8,40,3,0,0,-1,0,0,0,0,0,0,0,0,0
+10,52,Max Code completed,675,475,54,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,53,17,52,0,0,0,0,0,64,0,-1--1--1,,1|(691,412)|
+10,54,rookie code completed,513,472,57,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,55,experienced code completed,837,481,45,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,56,21,55,0,0,0,0,0,64,0,-1--1--1,,1|(836,446)|
+1,57,20,54,0,0,0,0,0,64,0,-1--1--1,,1|(540,444)|
+1,58,52,54,0,0,0,0,0,64,0,-1--1--1,,1|(602,473)|
+1,59,52,55,0,0,0,0,0,64,0,-1--1--1,,1|(753,477)|
+1,60,32,52,0,0,0,0,0,64,0,-1--1--1,,1|(622,524)|
+10,61,rookie yield,796,644,31,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+10,62,experienced yield,693,695,45,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,63,61,37,0,0,0,0,0,64,0,-1--1--1,,1|(760,613)|
+1,64,62,37,0,0,0,0,0,64,0,-1--1--1,,1|(704,641)|
+1,65,55,37,0,0,0,0,0,64,0,-1--1--1,,1|(777,529)|
+1,66,54,37,0,0,0,0,0,64,0,-1--1--1,,1|(614,524)|
+1,67,62,42,0,0,0,0,0,64,0,-1--1--1,,1|(657,672)|
+1,68,61,42,0,0,0,0,0,64,0,-1--1--1,,1|(714,643)|
+1,69,54,41,1,0,0,0,0,64,0,-1--1--1,,1|(494,554)|
+1,70,55,41,1,0,0,0,0,64,0,-1--1--1,,1|(685,548)|
+1,71,34,46,0,0,0,0,0,64,0,-1--1--1,,1|(520,676)|
+10,72,Discovery Rate Variable,359,622,40,14,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,73,72,46,0,0,0,0,0,64,0,-1--1--1,,1|(418,632)|
+10,74,Activate Flag,857,105,35,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,75,74,10,0,0,0,0,0,64,0,-1--1--1,,1|(822,145)|
+10,76,Code Yield Fraction,825,738,51,8,8,3,0,0,0,0,0,0,0,0,0,0,0,0
+1,77,38,76,1,0,0,0,0,64,0,-1--1--1,,1|(842,640)|
+1,78,42,76,1,0,0,0,0,64,0,-1--1--1,,1|(664,734)|
+///---\\\
+:GRAPH GRAPH
+:TITLE  
+:X-AXIS Time
+:SCALE
+:VAR Experienced
+:SCALE
+:VAR Rookies
+:SCALE
+:VAR Code Yield Fraction
+:L<%^E!@
+1:Current.vdfx
+9:Current
+23:0
+15:0,0,0,0,0,0
+19:5,0
+27:0,
+34:0,
+42:1
+72:0
+73:0
+4:Time
+5:Code Yield Fraction
+35:Date
+36:YYYY-MM-DD
+37:2000
+38:1
+39:1
+40:4
+41:0
+76:0
+77:0
+78:0
+79:0
+80:0
+81:0
+24:0
+25:200
+26:200
+75:
+43:
